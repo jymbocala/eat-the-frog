@@ -1,7 +1,9 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date
 from flask_marshmallow import Marshmallow
-from datetime import date, datetime
+from flask_bcrypt import Bcrypt
+
 
 app = Flask(__name__)
 
@@ -11,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://eat_the_frog_dev:
 # create the database object
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+bcrypt = Bcrypt(app)
 
 
 class Task(db.Model):
@@ -19,8 +22,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    date_created = db.Column(
-        db.Date, default=datetime.now().strftime('%Y-%m-%d'))
+    date_created = db.Column(db.Date)
 
 class TaskSchema(ma.Schema):
     class Meta:
@@ -53,13 +55,13 @@ def db_seed():
         User(
             name='Giddig Nor',
             email='admin@spam.com',
-            password='admin123',
+            password=bcrypt.generate_password_hash('admin123').decode('utf-8'),
             is_admin=True
         ),
         User(
             name='Jav Ascripp',
             email='jav@spam.com',
-            password='javascript123',
+            password=bcrypt.generate_password_hash('javascript123').decode('utf-8')
         )
     ]
 
@@ -91,23 +93,23 @@ def all_cards():
     return TaskSchema(many=True).dump(tasks)
 
 
-# @app.route('/users/register', methods=['POST'])
-# def register():
-#     # Parse incoming POST body through the schema
-#     user_info = UserSchema(exclude=['id']).load(request.json)
-#     # Create a new user with the parsed data
-#     user = User(
-#         email=user_info['email'],
-#         password=bcrypt.generate_password_hash(user_info['password']).decode('utf8'),
-#         name=user_info.get('name', '')
-#     )
+@app.route('/users/register', methods=['POST'])
+def register():
+    # Parse incoming POST body through the schema
+    user_info = UserSchema(exclude=['id']).load(request.json)
+    # Create a new user with the parsed data
+    user = User(
+        email=user_info['email'],
+        password=bcrypt.generate_password_hash(user_info['password']).decode('utf8'),
+        name=user_info.get('name', '')
+    )
 
-#     # Add and commit the new user to the database
-#     db.session.add(user)
-#     db.session.commit()
+    # Add and commit the new user to the database
+    db.session.add(user)
+    db.session.commit()
 
-#     # Return the new user
-#     return UserSchema(exclude=['password']).dump(user), 201
+    # Return the new user
+    return UserSchema(exclude=['password']).dump(user), 201
 
 @app.route("/")
 def hello_world():
