@@ -1,17 +1,18 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
+from os import environ
 
 
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "Backend best end" 
+app.config["JWT_SECRET_KEY"] = environ.get('JWT_KEY') 
 
 # set the database URI via SQLAlchemy,
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://eat_the_frog_dev:spameggs123@127.0.0.1:5432/eat_the_frog_db'
@@ -21,6 +22,17 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+
+def admin_required():
+    user_email = get_jwt_identity()
+    stmt = db.select(User).where(User.email == user_email)
+    user = db.session.scalar(stmt)
+    if not (user and user.is_admin):
+        abort(401)
+
+@app.errorhandler(401)
+def unauthorized(err):
+    return {'error': 'You are not authorized to access this resource'}
 
 
 class Task(db.Model):
@@ -95,6 +107,7 @@ def db_seed():
 @app.route('/task')
 @jwt_required()
 def all_cards():
+    admin_required()
     # select * from task;
     stmt = db.select(Task)
     tasks = db.session.scalars(stmt).all()
@@ -105,7 +118,7 @@ def all_cards():
 def register():
     try:
         # Parse incoming POST body through the schema
-        user_info = UserSchema(exclude=['id']).load(request.json)
+        user_info = UserSchema(exclude=['id', 'is_admin']).load(request.json)
         # Create a new user with the parsed data
         user = User(
             email=user_info['email'],
@@ -123,23 +136,19 @@ def register():
     except IntegrityError:
         return {'error': 'Email already exists'}, 409
 
-@app.route("/users/login", methods=["POST"])
+@app.route('/users/login', methods=['POST'])
 def login():
     # 1. Parse incoming POST body through the schema
-    user_info = UserSchema(exclude=["id", "name", "is_admin"]).load(request.json)
+    user_info = UserSchema(exclude=['id', 'name', 'is_admin']).load(request.json)
     # 2. Select user with email that matches the one in the POST body
-    stmt = db.select(User).where(User.email == user_info["email"])
+    stmt = db.select(User).where(User.email == user_info['email'])
     user = db.session.scalar(stmt)
     # 3. Check password hash
-    if user and bcrypt.check_password_hash(user.password, user_info["password"]):
+    if user and bcrypt.check_password_hash(user.password, user_info['password']):
         # 4. Create a JWT token
         token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))
         # 5. Return the token
-        return {'token': token, 'user': UserSchema(exclude=["password"]).dump(user)}
+        return {'token': token, 'user': UserSchema(exclude=['password']).dump(user)}
     else:
-        return {"error": "Invalid email or password"}, 401
+        return {'error': 'Invalid email or password'}, 401
 
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
