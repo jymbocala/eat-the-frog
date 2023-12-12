@@ -16,6 +16,8 @@ def db_create():
 
 @db_commands.cli.command('seed')
 def db_seed():
+    
+    # Users
     users = [
         User(
             name='Giddig Nor',
@@ -30,20 +32,25 @@ def db_seed():
         )
     ]
 
+    db.session.add_all(users)
+    db.session.commit()
+
+    # Tasks
     tasks = [
         Task(
         title='Complete Eat the Frog App Documentation',
         description='Complete the documentation for the Eat the Frog App and submit it to the Eat the Frog App Github repo.',
-        date_created=date.today()
+        date_created=date.today(),
+        user_id = users[0].id
         ),
         Task(
         title='Finish Eat the Frog App',
         description='Finish the Eat the Frog App and submit it to the Eat the Frog App Github repo.',
-        date_created=date.today()
+        date_created=date.today(),
+        user_id = users[1].id
         ),
     ]
 
-    db.session.add_all(users)
     db.session.add_all(tasks)
     db.session.commit()
 

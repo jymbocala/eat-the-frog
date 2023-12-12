@@ -10,17 +10,17 @@ tasks_bp = Blueprint('tasks', __name__, url_prefix='/tasks')
 @tasks_bp.route('/')
 @jwt_required()
 def all_tasks():
-    admin_required()
+    # admin_required()
     # select * from task;
     stmt = db.select(Task)
     tasks = db.session.scalars(stmt).all()
-    return TaskSchema(many=True).dump(tasks)
+    return TaskSchema(many=True, exclude=['user.tasks']).dump(tasks)
 
 # Get one task
 @tasks_bp.route('/<int:id>')
 @jwt_required()
 def one_task(id):
-    admin_required()
+    # admin_required()
     stmt = db.select(Task).filter_by(id=id) # .where(task.id == id)
     task = db.session.scalar(stmt)
     if task:
@@ -61,7 +61,7 @@ def update_task(id):
 @tasks_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_task(id):
-    admin_required()
+    # admin_required()
     stmt = db.select(Task).filter_by(id=id) # .where(Task.id == id)
     task = db.session.scalar(stmt)
     if task:
