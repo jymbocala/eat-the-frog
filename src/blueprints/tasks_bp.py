@@ -32,10 +32,11 @@ def one_task(id):
 @tasks_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_task():
-    task_info = TaskSchema(exclude=['id', 'date_created']).load(request.json)
+    task_info = TaskSchema(exclude=['id','is_completed', 'date_created']).load(request.json)
     task = Task(
         title=task_info['title'],
-        description=task_info['description']
+        description=task_info['description'],
+        subtasks=task_info['subtasks']
     )
 
     db.session.add(task)
@@ -52,6 +53,9 @@ def update_task(id):
     if task:
         task.title = task_info.get('title', task.title)
         task.description = task_info.get('description', task.description)
+        task.subtasks = task_info.get('subtasks', task.subtasks)
+        task.is_complete = task_info.get('is_complete', task.is_complete)
+
         db.session.commit()
         return TaskSchema().dump(task)
     else:

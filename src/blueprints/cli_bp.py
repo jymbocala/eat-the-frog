@@ -40,12 +40,14 @@ def db_seed():
         Task(
         title='Complete Eat the Frog App Documentation',
         description='Complete the documentation for the Eat the Frog App and submit it to the Eat the Frog App Github repo.',
+        subtasks=['Write the Q1-3', 'Write the Q4-8', 'WWrite remaining Qs'],
         date_created=date.today(),
         user_id = users[0].id
         ),
         Task(
         title='Finish Eat the Frog App',
         description='Finish the Eat the Frog App and submit it to the Eat the Frog App Github repo.',
+        subtasks=['Create the backend', 'Create the frontend', 'Deploy the app'],
         date_created=date.today(),
         user_id = users[1].id
         ),
