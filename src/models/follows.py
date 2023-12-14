@@ -14,6 +14,10 @@ class Follows(db.Model):
     follower = db.relationship('User', foreign_keys=[follower_id], back_populates='follows')
     following = db.relationship('User', foreign_keys=[following_id], back_populates='followed_by')
 
+
 class FollowsSchema(ma.Schema):
+    follower = fields.Nested('UserSchema', only=['id', 'name', 'email'], many=False)
+    following = fields.Nested('UserSchema', only=['id', 'name', 'email'], many=False)
+    
     class Meta:
-        fields = ('id', 'follower_id', 'following_id', 'followed_at')
+        fields = ('id', 'follower_id', 'following_id', 'followed_at', 'follower', 'following')
