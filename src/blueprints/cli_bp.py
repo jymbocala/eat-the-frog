@@ -2,6 +2,7 @@ from flask import Blueprint
 from setup import db, bcrypt
 from models.task import Task
 from models.user import User
+from models.follows import Follows
 from datetime import date
 
 db_commands = Blueprint('db', __name__)
@@ -26,13 +27,29 @@ def db_seed():
             is_admin=True
         ),
         User(
-            name='Jav Ascripp',
+            name='Jav Scripp',
             email='jav@spam.com',
             password=bcrypt.generate_password_hash('javascript123').decode('utf-8')
+        ),
+        User(
+            name='Rae Act',
+            email='react@spam.com',
+            password=bcrypt.generate_password_hash('react123').decode('utf-8')
         )
     ]
 
     db.session.add_all(users)
+    db.session.commit()
+
+    # Follows relationships
+    follows = [
+        Follows(follower_id=users[0].id, following_id=users[1].id),
+        Follows(follower_id=users[0].id, following_id=users[2].id),
+        Follows(follower_id=users[1].id, following_id=users[2].id),
+        Follows(follower_id=users[2].id, following_id=users[1].id)
+    ]
+
+    db.session.add_all(follows)
     db.session.commit()
 
     # Tasks

@@ -56,3 +56,17 @@ def all_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True, exclude=['password']).dump(users)
+
+# Delete a user
+@users_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(id):
+    admin_required()
+    stmt = db.select(User).filter_by(id=id)
+    user = db.session.scalar(stmt)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'message': 'User deleted successfully'}
+    else:
+        return {'error': 'User not found'}, 404
