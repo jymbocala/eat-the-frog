@@ -56,3 +56,30 @@ def unfollow_user(user_id):
     db.session.commit()
 
     return {"message": "User unfollowed successfully"}, 200
+
+@follows_bp.route("/<int:user_id>/followers", methods=["GET"])
+@jwt_required()
+def get_followers(user_id):
+    followers = Follows.query.filter_by(following_id=user_id).all()
+    
+    # Total number of followers
+    total_followers = len(followers)
+    
+    # List of followers (following_id)
+    followers_list = [{"follower_id": follow.follower_id} for follow in followers]
+    
+    return {"total_followers": total_followers, "followers": followers_list}, 200
+
+
+@follows_bp.route("/<int:user_id>/following", methods=["GET"])
+@jwt_required()
+def get_following(user_id):
+    following = Follows.query.filter_by(follower_id=user_id).all()
+    
+    # Total number of users being followed
+    total_following = len(following)
+    
+    # List of users being followed (following_id)
+    following_list = [{"following_id": follow.following_id} for follow in following]
+    
+    return {"total_following": total_following, "following": following_list}, 200
