@@ -1,18 +1,18 @@
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from setup import db
 from models.task import TaskSchema, Task
-from auth import admin_required
+from auth import authorize
 
 tasks_bp = Blueprint('tasks', __name__, url_prefix='/tasks')
 
-# Get all tasks
+# Get all tasks (for the current user)
 @tasks_bp.route('/')
 @jwt_required()
 def all_tasks():
-    # admin_required()
-    # select * from task;
-    stmt = db.select(Task)
+    current_user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    
+    stmt = db.select(Task).where(Task.user_id == current_user_id)
     tasks = db.session.scalars(stmt).all()
     return TaskSchema(many=True, exclude=['user.tasks', 'user.follows', 'user.followed_by', 'user.is_admin', 'user.email']).dump(tasks)
 
@@ -20,10 +20,11 @@ def all_tasks():
 @tasks_bp.route('/<int:id>')
 @jwt_required()
 def one_task(id):
-    # admin_required()
     stmt = db.select(Task).filter_by(id=id) # .where(task.id == id)
     task = db.session.scalar(stmt)
     if task:
+        authorize(task.user_id)
+
         # Specify the fields you want to include in the nested UserSchema
         include_user_fields = ['id', 'name']
 
@@ -58,6 +59,7 @@ def update_task(id):
     stmt = db.select(Task).filter_by(id=id) # .where(Task.id == id)
     task = db.session.scalar(stmt)
     if task:
+        authorize(task.user_id)
         task.title = task_info.get('title', task.title)
         task.description = task_info.get('description', task.description)
         task.subtasks = task_info.get('subtasks', task.subtasks)
@@ -72,10 +74,10 @@ def update_task(id):
 @tasks_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_task(id):
-    # admin_required()
     stmt = db.select(Task).filter_by(id=id) # .where(Task.id == id)
     task = db.session.scalar(stmt)
     if task:
+        authorize(task.user_id)
         db.session.delete(task)
         db.session.commit()
         return 'Task deleted', 200

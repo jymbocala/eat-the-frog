@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from auth import admin_required
+from auth import authorize
 from models.user import User, UserSchema
 from setup import bcrypt, db
 from sqlalchemy.exc import IntegrityError
@@ -52,7 +52,7 @@ def login():
 @users_bp.route('/')
 @jwt_required()
 def all_users():
-    admin_required()
+    authorize() # Check if the user is admin
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True, exclude=['password']).dump(users)
@@ -61,7 +61,7 @@ def all_users():
 @users_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(id):
-    admin_required()
+    authorize()
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     if user:
