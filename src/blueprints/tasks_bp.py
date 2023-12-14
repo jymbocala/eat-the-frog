@@ -14,7 +14,7 @@ def all_tasks():
     # select * from task;
     stmt = db.select(Task)
     tasks = db.session.scalars(stmt).all()
-    return TaskSchema(many=True, exclude=['user.tasks']).dump(tasks)
+    return TaskSchema(many=True, exclude=['user.tasks', 'user.follows', 'user.followed_by', 'user.is_admin', 'user.email']).dump(tasks)
 
 # Get one task
 @tasks_bp.route('/<int:id>')
@@ -24,7 +24,14 @@ def one_task(id):
     stmt = db.select(Task).filter_by(id=id) # .where(task.id == id)
     task = db.session.scalar(stmt)
     if task:
-        return TaskSchema().dump(task)
+        # Specify the fields you want to include in the nested UserSchema
+        include_user_fields = ['id', 'name']
+
+        # Use the only parameter to include specific fields in the nested UserSchema
+        task_schema = TaskSchema()
+        task_schema.fields['user'].only = include_user_fields
+
+        return task_schema.dump(task)
     else:
         return {'error': 'Task not found'}, 404
 
