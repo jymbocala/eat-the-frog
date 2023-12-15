@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from setup import db
@@ -40,16 +41,33 @@ def one_task(id):
 @tasks_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_task():
-    task_info = TaskSchema(exclude=['id','is_completed', 'date_created']).load(request.json)
-    task = Task(
+    # Get the current user ID
+    user_id = get_jwt_identity()
+
+    # Check if a task already exists for the current day
+    today = datetime.today().date()
+    existing_task = Task.query.filter_by(user_id=user_id, date_created=today).first()
+
+    if existing_task:
+        return {'error': 'You can only create one task per day'}, 400
+
+    # Parse incoming POST body through the schema
+    task_info = TaskSchema().load(request.json)
+
+    # Create a new task
+    new_task = Task(
         title=task_info['title'],
         description=task_info['description'],
-        subtasks=task_info['subtasks']
+        # subtasks with default value as an empty list
+        subtasks=task_info.get('subtasks', []),
+        date_created=today,
+        user_id=user_id
     )
 
-    db.session.add(task)
+    db.session.add(new_task)
     db.session.commit()
-    return TaskSchema().dump(task), 201
+
+    return TaskSchema(exclude=['user.tasks', 'user.follows', 'user.followed_by', 'user.is_admin', 'user.email']).dump(new_task), 201
 
 # Update a task
 @tasks_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
