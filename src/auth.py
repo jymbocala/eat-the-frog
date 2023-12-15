@@ -4,7 +4,10 @@ from models.user import User
 from setup import db
 
 def authorize(user_id=None):
+    # Get the user ID from the JWT token
     jwt_user_id = get_jwt_identity()
+
+    # Select the user from the database using the user ID from the JWT token
     stmt = db.select(User).filter_by(id=jwt_user_id)
     user = db.session.scalar(stmt)
 

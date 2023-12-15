@@ -29,8 +29,10 @@ class User(db.Model):
 
 
 class UserSchema(ma.Schema):
+    # Tell Marshmallow to nest a TaskSchema instance when serializing the tasks attribute
     tasks = fields.Nested('TaskSchema', exclude=['user'], many=True)
-    
+
+    # Tell Marshmallow to nest a FollowsSchema instance when serializing the follows and followed_by attributes
     follows = fields.Nested('FollowsSchema', only=['following_id', 'followed_at'], many=True)
     followed_by = fields.Nested('FollowsSchema', only=['follower_id', 'followed_at'], many=True)
 

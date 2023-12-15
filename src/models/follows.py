@@ -16,6 +16,7 @@ class Follows(db.Model):
 
 
 class FollowsSchema(ma.Schema):
+    # Tell Marshmallow to nest a UserSchema instance when serializing the follower and following attributes
     follower = fields.Nested('UserSchema', only=['id', 'name', 'email'], many=False)
     following = fields.Nested('UserSchema', only=['id', 'name', 'email'], many=False)
     

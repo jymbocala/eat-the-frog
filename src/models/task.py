@@ -22,7 +22,7 @@ class Task(db.Model):
     # back_populates - tells SQLAlchemy to look for a tasks attribute in the User model and use that to populate the user attribute in this model
 
 class TaskSchema(ma.Schema):
-    # Tell Marshmallow to nest a UserSchema instance when serializing
+    # Tell Marshmallow to nest a UserSchema instance when serializing the user attribute
     user = fields.Nested('UserSchema', exclude=['password'])
 
     # VALIDATION
