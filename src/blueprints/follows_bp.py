@@ -6,7 +6,7 @@ from models.user import User
 
 follows_bp = Blueprint("follows", __name__, url_prefix="/users")
 
-
+# Follow a user
 @follows_bp.route("/<int:user_id>/follow", methods=["POST"])
 @jwt_required()
 def follow_user(user_id):
@@ -32,7 +32,7 @@ def follow_user(user_id):
 
     return {"message": "User followed successfully"}, 200
 
-
+# Unfollow a user
 @follows_bp.route("/<int:user_id>/unfollow", methods=["POST"])
 @jwt_required()
 def unfollow_user(user_id):
@@ -57,6 +57,7 @@ def unfollow_user(user_id):
 
     return {"message": "User unfollowed successfully"}, 200
 
+# Get list of a user's followers
 @follows_bp.route("/<int:user_id>/followers", methods=["GET"])
 @jwt_required()
 def get_followers(user_id):
@@ -65,12 +66,12 @@ def get_followers(user_id):
     # Total number of followers
     total_followers = len(followers)
     
-    # List of followers (following_id)
-    followers_list = [{"follower_id": follow.follower_id} for follow in followers]
+    # List of followers (following_id and name)
+    followers_list = [{"follower_id": follow.follower_id, "name": follow.follower.name} for follow in followers]
     
     return {"total_followers": total_followers, "followers": followers_list}, 200
 
-
+# Get list of users a user is following
 @follows_bp.route("/<int:user_id>/following", methods=["GET"])
 @jwt_required()
 def get_following(user_id):
@@ -80,6 +81,6 @@ def get_following(user_id):
     total_following = len(following)
     
     # List of users being followed (following_id)
-    following_list = [{"following_id": follow.following_id} for follow in following]
+    following_list = [{"following_id": follow.following_id, "name": follow.following.name} for follow in following]
     
     return {"total_following": total_following, "following": following_list}, 200

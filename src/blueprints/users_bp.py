@@ -25,6 +25,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        # Create a JWT token so the user is logged in after registering making it a better user experience
         token = create_access_token(identity=user.email, expires_delta=timedelta(hours=2))
 
         return {'token': token, 'user': UserSchema(exclude=["password"]).dump(user)}, 201
@@ -34,16 +35,18 @@ def register():
 # Login a user
 @users_bp.route('/login', methods=['POST'])
 def login():
-    # 1. Parse incoming POST body through the schema
+    # Parse incoming POST body through the schema
     user_info = UserSchema(exclude=['id', 'name', 'is_admin']).load(request.json)
-    # 2. Select user with email that matches the one in the POST body
+
+    # Select user with email that matches the one in the POST body
     stmt = db.select(User).where(User.email == user_info['email'])
     user = db.session.scalar(stmt)
-    # 3. Check password hash
+
+    # Check password hash
     if user and bcrypt.check_password_hash(user.password, user_info['password']):
-        # 4. Create a JWT token
+        # Create a JWT token
         token = create_access_token(identity=user.id, expires_delta=timedelta(hours=2))
-        # 5. Return the token
+        # Return the token and the user
         return {'token': token, 'user': UserSchema(exclude=['password', 'tasks']).dump(user)}
     else:
         return {'error': 'Invalid email or password'}, 401
@@ -61,12 +64,49 @@ def all_users():
 @users_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(id):
-    authorize()
+    authorize() # Check if the user is admin
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
+
+    # Check if the user exists
     if user:
         db.session.delete(user)
         db.session.commit()
         return {'message': 'User deleted successfully'}
+    else:
+        return {'error': 'User not found'}, 404
+    
+# Update user to admin
+@users_bp.route('/<int:id>/make-admin', methods=['PATCH'])
+@jwt_required()
+def update_user(id):
+    authorize() # Check if the user is admin
+    stmt = db.select(User).filter_by(id=id)
+    user = db.session.scalar(stmt)
+
+    # Check if the user exists
+    if user:
+        # Update the user to admin
+        user.is_admin = True
+        db.session.commit()
+        return {'message': 'User updated successfully'}
+    else:
+        return {'error': 'User not found'}, 404
+    
+
+# Remov admin privileges from user
+@users_bp.route('/<int:id>/remove-admin', methods=['PATCH'])
+@jwt_required()
+def remove_admin(id):
+    authorize() # Check if the user is admin
+    stmt = db.select(User).filter_by(id=id)
+    user = db.session.scalar(stmt)
+
+    # Check if the user exists
+    if user:
+        # Update the user's is_admin to False
+        user.is_admin = False
+        db.session.commit()
+        return {'message': 'User updated successfully'}
     else:
         return {'error': 'User not found'}, 404

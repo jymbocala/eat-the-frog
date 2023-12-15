@@ -10,6 +10,7 @@ db_commands = Blueprint('db', __name__)
 # CLI COMMANDS
 @db_commands.cli.command('create')
 def db_create():
+    # drop all tables first (if any) as we don't want to duplicate tables
     db.drop_all()
     db.create_all()
     print('Created tables')
@@ -23,18 +24,18 @@ def db_seed():
         User(
             name='Giddig Nor',
             email='admin@spam.com',
-            password=bcrypt.generate_password_hash('admin123').decode('utf-8'),
+            password=bcrypt.generate_password_hash('admin123!').decode('utf-8'),
             is_admin=True
         ),
         User(
             name='Jav Scripp',
             email='jav@spam.com',
-            password=bcrypt.generate_password_hash('javascript123').decode('utf-8')
+            password=bcrypt.generate_password_hash('javascript123!').decode('utf-8')
         ),
         User(
             name='Rae Act',
             email='react@spam.com',
-            password=bcrypt.generate_password_hash('react123').decode('utf-8')
+            password=bcrypt.generate_password_hash('react123!').decode('utf-8')
         )
     ]
 
@@ -43,9 +44,14 @@ def db_seed():
 
     # Follows relationships
     follows = [
-        Follows(follower_id=users[0].id, following_id=users[1].id),
+        # User 1 follows User 2 and User 3
+        Follows(follower_id=users[0].id, following_id=users[1].id), 
         Follows(follower_id=users[0].id, following_id=users[2].id),
+
+        # User 2 follows User 3
         Follows(follower_id=users[1].id, following_id=users[2].id),
+
+        # User 3 follows User 2
         Follows(follower_id=users[2].id, following_id=users[1].id)
     ]
 
@@ -57,7 +63,7 @@ def db_seed():
         Task(
         title='Complete Eat the Frog App Documentation',
         description='Complete the documentation for the Eat the Frog App and submit it to the Eat the Frog App Github repo.',
-        subtasks=['Write the Q1-3', 'Write the Q4-8', 'WWrite remaining Qs'],
+        subtasks=['Write the Q1-3', 'Write the Q4-8', 'Write remaining Qs'],
         date_created=date.today(),
         user_id = users[0].id
         ),
