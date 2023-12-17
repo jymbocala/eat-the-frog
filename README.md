@@ -3,39 +3,38 @@
 ## Eat The Frog App
 
 ### Table of Contents
-+ [**R1 - Identification of the problem you are trying to solve by building this particular app.**](#r1-identification-of-the-problem-you-are-trying-to-solve-by-building-this-particular-app) 
-+ [**R2 - Why is it a problem that needs solving?**](#r2-why-is-it-a-problem-that-needs-solving) 
-+ [**R3 - Why have you chosen this database system. What are the drawbacks compared to others?**](#r3-why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others) 
-+ [**R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**](#r4-identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm-why-use-sqlalchemy) 
-+ [**R5 - Document all endpoints for your API?**](#r5-document-all-endpoints-for-your-api) 
-+ [**User Routes**](#user-routes) 
-+ [**R6 - An ERD for your app**](#r6-an-erd-for-your-app) 
-+ [**R7 - Detail any third-party services that your app will use.**](#r7-detail-any-third-party-services-that-your-app-will-use) 
-+ [**R8 - Describe your project's models in terms of the relationships they have with each other.**](#r8-describe-your-projects-models-in-terms-of-the-relationships-they-have-with-each-other) 
++ [**R1 - Identification of the problem you are trying to solve by building this particular app.**](#r1) 
++ [**R2 - Why is it a problem that needs solving?**](#r2) 
++ [**R3 - Why have you chosen this database system. What are the drawbacks compared to others?**](#r3) 
++ [**R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**](#r4) 
++ [**R5 - Document all endpoints for your API?**](#r5) 
++ [**R6 - An ERD for your app**](#r6) 
++ [**R7 - Detail any third-party services that your app will use.**](#r7) 
++ [**R8 - Describe your project's models in terms of the relationships they have with each other.**](#r8) 
   - [User Model:](#user-model) 
   - [Task Model:](#task-model) 
   - [Follows Model:](#follows-model) 
-+ [**R9 - Discuss the database relations to be implemented in your application.**](#r9-discuss-the-database-relations-to-be-implemented-in-your-application) 
-+ [**R10 - Describe the way tasks are allocated and tracked in your project.**](#r10-describe-the-way-tasks-are-allocated-and-tracked-in-your-project) 
++ [**R9 - Discuss the database relations to be implemented in your application.**](#r9) 
++ [**R10 - Describe the way tasks are allocated and tracked in your project.**](#r10) 
   - [GitHub Projects](#github-projects) 
   - [Daily stand-ups](#daily-stand-ups) 
   - [GitHub Repo Commits](#github-repo-commits)
 
 ---
 
-### **R1 - Identification of the problem you are trying to solve by building this particular app.**
+### **R1 - Identification of the problem you are trying to solve by building this particular app.** <a id="r1"></a>
 
 I am developing this app to address the common issue of procrastination, a significant obstacle to productivity. The primary challenge many individuals face is the lack of prioritization and feeling overwhelmed by numerous tasks. This app is inspired by Brian Tracy's philosophy outlined in his book "Eat That Frog!", the app aims to guide users in tackling their most challenging task each day, using the metaphor of "eating a frog" as a representation of overcoming difficulties.
 
 ---
 
-### **R2 - Why is it a problem that needs solving?**
+### **R2 - Why is it a problem that needs solving?** <a id="r2"></a>
 
 Compared to traditional to-do apps, this app's focus is on cultivating the habit of completing the most challenging task daily. To emphasize this, users are restricted to creating only one crucial task per day. Additionally, the app incorporates social interaction features, allowing users to follow each other and includes gamification elements to enhance user engagement. The intent is to create a supportive and motivating environment, encouraging users to consistently confront and conquer their daily challenges. The problem it addresses is the lack of an effective tool that specifically target the highest priority task for a user and provide a structured approach to task management while fostering a sense of community and motivation among users.
 
 ---
 
-### **R3 - Why have you chosen this database system. What are the drawbacks compared to others?**
+### **R3 - Why have you chosen this database system. What are the drawbacks compared to others?** <a id="r3"></a>
 
 I have chose PostgreSQL for my application for a number of reasons:
 
@@ -60,7 +59,7 @@ https://www.guru99.com/introduction-postgresql.html
 
 ---
 
-### **R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**
+### **R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?** <a id="r4"></a>
 
 In my project, SQLAlchemy serves as a valuable Object-Relational Mapping (ORM) tool, facilitating smooth communication between my code and the database. It offers several benefits that enhance my development experience:
 
@@ -74,7 +73,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 
 ---
 
-### **R5 - Document all endpoints for your API?**
+### **R5 - Document all endpoints for your API?** <a id="r5"></a>
 
 ### **User Routes**
 
@@ -318,13 +317,13 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 
 ---
 
-### **R6 - An ERD for your app**
+### **R6 - An ERD for your app** <a id="r6"></a>
 
 ![ERD](./docs/images/ERD.png)
 
 ---
 
-### **R7 - Detail any third-party services that your app will use.**
+### **R7 - Detail any third-party services that your app will use.** <a id="r7"></a>
 
 #### Flask:
 
@@ -356,7 +355,7 @@ JWT Manager is used when someone logs in, they are given special token. This tok
 
 ---
 
-### **R8 - Describe your project's models in terms of the relationships they have with each other.**
+### **R8 - Describe your project's models in terms of the relationships they have with each other.** <a id="r8"></a>
 
 #### User Model:
 
@@ -425,7 +424,7 @@ class Follows(db.Model):
 
 ---
 
-### **R9 - Discuss the database relations to be implemented in your application.**
+### **R9 - Discuss the database relations to be implemented in your application.** <a id="r9"></a>
 
 The central model is the User model, which represents individuals using the app. It's connected to the Task model through a one-to-many relationship. This means that one user can have multiple tasks, and tasks belong to a single user. This relationship is bidirectional, allowing easy navigation between users and their associated tasks.
 
@@ -433,7 +432,7 @@ Additionally, the User model is linked to the Follows model. The Follows model e
 
 ---
 
-### **R10 - Describe the way tasks are allocated and tracked in your project.**
+### **R10 - Describe the way tasks are allocated and tracked in your project.** <a id="r10"></a>
 
 #### [GitHub Projects](https://github.com/users/jymbocala/projects/3/views/2)
 
