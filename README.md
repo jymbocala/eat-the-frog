@@ -1,48 +1,25 @@
 # JymBocala_T2A2
+
 ## Eat The Frog App
 
-- [Table of Contents:](#table-of-contents)
-      + [**R1 - Identification of the problem you are trying to solve by building this particular app.**](#r1---identification-of-the-problem-you-are-trying-to-solve-by-building-this-particular-app)
-      + [**R2 - Why is it a problem that needs solving?**](#r2---why-is-it-a-problem-that-needs-solving)
-      + [**R3 - Why have you chosen this database system. What are the drawbacks compared to others?**](#r3---why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others)
-      + [**R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**](#r4---identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm-why-use-sqlalchemy)
-      + [**R5 - Document all endpoints for your API?**](#r5---document-all-endpoints-for-your-api)
-      + [**User Routes**](#user-routes)
-         - [**1. /register**](#1-register)
-         - [**2. /login**](#2-login)
-         - [**3. /users**](#3-users)
-         - [**4. /users/<int:id>**](#4-users)
-         - [**5. /users/<int:id>/make-admin**](#5-usersmake-admin)
-         - [**6. /users/<int:id>/remove-admin**](#6-usersremove-admin)
-      + [**Task Routes**](#task-routes)
-         - [**7. /tasks/**](#7-tasks)
-         - [**8. /tasks/{id}**](#8-tasksid)
-         - [**9. /tasks**](#9-tasks)
-         - [**10. /tasks/<int:id>**](#10-tasks)
-         - [**11. /tasks/<int:id>**](#11-tasks)
-      + [**Follows Routes**](#follows-routes)
-         - [**12. /users/<int:user_id>/follow**](#12-usersfollow)
-         - [**13. /users/<int:user_id>/unfollow**](#13-usersunfollow)
-         - [**14. /users/<int:user_id>/followers**](#14-usersfollowers)
-         - [**15. /users/<int:user_id>/following**](#15-usersfollowing)
-      + [**R6 - An ERD for your app**](#r6---an-erd-for-your-app)
-      + [**R7 - Detail any third-party services that your app will use.**](#r7---detail-any-third-party-services-that-your-app-will-use)
-         - [Flask:](#flask)
-         - [SQL Alchemy:](#sql-alchemy)
-         - [PostgreSQL:](#postgresql)
-         - [Marshmallow:](#marshmallow)
-         - [Psycopg2:](#psycopg2)
-         - [Bcrypt:](#bcrypt)
-         - [JWT Manager:](#jwt-manager)
-      + [**R8 - Describe your project's models in terms of the relationships they have with each other.**](#r8---describe-your-projects-models-in-terms-of-the-relationships-they-have-with-each-other)
-         - [User Model:](#user-model)
-         - [Task Model:](#task-model)
-         - [Follows Model:](#follows-model)
-      + [**R9 - Discuss the database relations to be implemented in your application.**](#r9---discuss-the-database-relations-to-be-implemented-in-your-application)
-      + [**R10 - Describe the way tasks are allocated and tracked in your project.**](#r10---describe-the-way-tasks-are-allocated-and-tracked-in-your-project)
-         - [GitHub Projects](#github-projects)
-         - [Daily stand-ups](#daily-stand-ups)
-         - [GitHub Repo Commits](#github-repo-commits)
+### Table of Contents
++ [**R1 - Identification of the problem you are trying to solve by building this particular app.**](#r1-identification-of-the-problem-you-are-trying-to-solve-by-building-this-particular-app) 
++ [**R2 - Why is it a problem that needs solving?**](#r2-why-is-it-a-problem-that-needs-solving) 
++ [**R3 - Why have you chosen this database system. What are the drawbacks compared to others?**](#r3-why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others) 
++ [**R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**](#r4-identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm-why-use-sqlalchemy) 
++ [**R5 - Document all endpoints for your API?**](#r5-document-all-endpoints-for-your-api) 
++ [**User Routes**](#user-routes) 
++ [**R6 - An ERD for your app**](#r6-an-erd-for-your-app) 
++ [**R7 - Detail any third-party services that your app will use.**](#r7-detail-any-third-party-services-that-your-app-will-use) 
++ [**R8 - Describe your project's models in terms of the relationships they have with each other.**](#r8-describe-your-projects-models-in-terms-of-the-relationships-they-have-with-each-other) 
+  - [User Model:](#user-model) 
+  - [Task Model:](#task-model) 
+  - [Follows Model:](#follows-model) 
++ [**R9 - Discuss the database relations to be implemented in your application.**](#r9-discuss-the-database-relations-to-be-implemented-in-your-application) 
++ [**R10 - Describe the way tasks are allocated and tracked in your project.**](#r10-describe-the-way-tasks-are-allocated-and-tracked-in-your-project) 
+  - [GitHub Projects](#github-projects) 
+  - [Daily stand-ups](#daily-stand-ups) 
+  - [GitHub Repo Commits](#github-repo-commits)
 
 ---
 
@@ -76,7 +53,6 @@ However, there are some drawbacks:
 
 - **Horizontal Scalability Challenges:** While PostgreSQL excels in many scenarios, extreme horizontal scalability might present challenges compared to some NoSQL databases designed for massive, distributed systems. Alternative database systems may offer more straightforward solutions.
 
-
 Sources:
 https://docs.digitalocean.com/glossary/acid/#:~:text=state%20ensuring%20durability.-,PostgreSQL,order%20to%20keep%20data%20consistent.
 https://onesignal.com/blog/lessons-learned-from-5-years-of-scaling-postgresql/
@@ -85,7 +61,6 @@ https://www.guru99.com/introduction-postgresql.html
 ---
 
 ### **R4 - Identify and discuss the key functionalities and benefits of an ORM. Why use SQLAlchemy?**
-
 
 In my project, SQLAlchemy serves as a valuable Object-Relational Mapping (ORM) tool, facilitating smooth communication between my code and the database. It offers several benefits that enhance my development experience:
 
@@ -100,9 +75,11 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 ### **R5 - Document all endpoints for your API?**
+
 ### **User Routes**
 
 #### **1. /register**
+
 - **HTTP Request Verb:** POST
 
 - **Required data:** name, email, password
@@ -116,6 +93,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **2. /login**
+
 - **HTTP Request Verb:** POST
 
 - **Required Data:** email, password
@@ -129,6 +107,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **3. /users**
+
 - **HTTP Request Verb:** GET
 
 - **Required Data:** None
@@ -144,6 +123,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **4. /users/<int:id>**
+
 - **HTTP Request Verb:** DELETE
 
 - **Required Data:** None
@@ -159,6 +139,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **5. /users/<int:id>/make-admin**
+
 - **HTTP Request Verb:** PATCH
 
 - **Required Data:** None
@@ -174,6 +155,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **6. /users/<int:id>/remove-admin**
+
 - **HTTP Request Verb:** PATCH
 
 - **Required Data:** None
@@ -191,6 +173,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ### **Task Routes**
 
 #### **7. /tasks/**
+
 - **HTTP Request Verb:** GET
 
 - **Required Data:** None
@@ -206,6 +189,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **8. /tasks/{id}**
+
 - **HTTP Request Verb:** GET
 
 - **Required Data:** Task ID in the URL
@@ -221,6 +205,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **9. /tasks**
+
 - **HTTP Request Verb:** POST
 
 - **Required Data:** Task information in the request body (title, description, subtasks - optional)
@@ -236,6 +221,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **10. /tasks/<int:id>**
+
 - **HTTP Request Verb:** PUT, PATCH
 
 - **Required Data:** Task information in the request body (title, description, subtasks, is_completed - optional)
@@ -251,6 +237,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **11. /tasks/<int:id>**
+
 - **HTTP Request Verb:** DELETE
 
 - **Required Data:** None
@@ -268,6 +255,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ### **Follows Routes**
 
 #### **12. /users/<int:user_id>/follow**
+
 - **HTTP Request Verb:** POST
 
 - **Required Data:** None
@@ -283,6 +271,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **13. /users/<int:user_id>/unfollow**
+
 - **HTTP Request Verb:** POST
 
 - **Required Data:** None
@@ -298,6 +287,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **14. /users/<int:user_id>/followers**
+
 - **HTTP Request Verb:** GET
 
 - **Required Data:** None
@@ -313,6 +303,7 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ---
 
 #### **15. /users/<int:user_id>/following**
+
 - **HTTP Request Verb:** GET
 
 - **Required Data:** None
@@ -325,7 +316,6 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 
 ![Get /users/<int:user_id>/following](docs/images/endpoints/get-user's_following_list.png)
 
-
 ---
 
 ### **R6 - An ERD for your app**
@@ -337,24 +327,31 @@ In essence, SQLAlchemy is a pragmatic choice for my project, offering a simplifi
 ### **R7 - Detail any third-party services that your app will use.**
 
 #### Flask:
+
 I use Flask to create different parts of my app, like routes, where I decide what happens when someone makes a request.
 
 #### SQL Alchemy:
+
 I rely on SQL Alchemy to talk to my database in a way that's easy for Python to understand. It acts like a translator, making sure my app and the database can communicate without any barriers.
 
 #### PostgreSQL:
+
 PostgreSQL is my database, the place where I store all the important information for my app. It serves as a super-smart, organized filing cabinet, keeping everything in order for quick access.
 
 #### Marshmallow:
-Marshmallow is my go-to tool for converting complex things, like Python objects, into a format that I can easily share with others, like JSON. 
+
+Marshmallow is my go-to tool for converting complex things, like Python objects, into a format that I can easily share with others, like JSON.
 
 #### Psycopg2:
+
 Psycopg2 is my delivery person between my app and the PostgreSQL database. It ensures that when my app wants to talk to the database, the message gets there safe and sound.
 
 #### Bcrypt:
+
 I use Bcrypt is used to hash passwords. It takes the passwords my users create, turns them into a string of generated characters, and stores them safely.
 
 #### JWT Manager:
+
 JWT Manager is used when someone logs in, they are given special token. This token lets them access certain parts of my app without having to log in every time. JWT Manager helps me create and check these tokens.
 
 ---
@@ -362,6 +359,7 @@ JWT Manager is used when someone logs in, they are given special token. This tok
 ### **R8 - Describe your project's models in terms of the relationships they have with each other.**
 
 #### User Model:
+
 The User model represents the core entity of my app, encapsulating user-related data such as name, email, and password. It also includes attributes for tracking user statistics like completed tasks, streaks, and admin status. The model establishes a one-to-many relationship with the Task model, allowing each user to have multiple associated tasks. Additionally, it features a many-to-many relationship through the Follows model, enabling users to follow and be followed by other users, fostering a social aspect within the application.
 
 ```python
@@ -377,7 +375,7 @@ class User(db.Model):
     total_tasks_completed = db.Column(db.Integer, default=0)
     longest_streak = db.Column(db.Integer, default=0)
     current_streak = db.Column(db.Integer, default=0)
-    
+
     tasks = db.relationship('Task', back_populates='user', cascade='all, delete')
 
     follows = db.relationship('Follows', foreign_keys='Follows.follower_id', back_populates='follower', primaryjoin='User.id == Follows.follower_id')
@@ -387,6 +385,7 @@ class User(db.Model):
 ---
 
 #### Task Model:
+
 The Task model represents individual tasks created by users. It includes fields for task details such as title, description, subtasks, completion status, and the date of creation. The model is linked to the User model through a foreign key, establishing a many-to-one relationship. This relationship allows each task to be associated with a specific user. The back_populates attribute in the User model ensures that the user's tasks attribute is populated appropriately.
 
 ```python
@@ -408,12 +407,13 @@ class Task(db.Model):
 ---
 
 #### Follows Model:
+
 The Follows model captures the relationships between users, indicating who is following whom. It includes foreign keys referencing the User model to represent both the follower and the user being followed. The model features two one-to-many relationships with the User model through the follower and following attributes. These relationships are bidirectional, as reflected in the back_populates attribute in the User model. This design allows for efficient retrieval of followers and users being followed for a given user.
 
 ```python
 class Follows(db.Model):
     __tablename__ = 'follows'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -423,7 +423,6 @@ class Follows(db.Model):
     following = db.relationship('User', foreign_keys=[following_id], back_populates='followed_by')
 ```
 
-
 ---
 
 ### **R9 - Discuss the database relations to be implemented in your application.**
@@ -432,10 +431,10 @@ The central model is the User model, which represents individuals using the app.
 
 Additionally, the User model is linked to the Follows model. The Follows model establishes two separate relationships, one for followers and another for users being followed. This creates a many-to-many relationship between users. Users can follow multiple other users, and they can also be followed by many different users. The Follows model includes timestamps to capture when these connections are established.
 
-
 ---
 
 ### **R10 - Describe the way tasks are allocated and tracked in your project.**
+
 #### [GitHub Projects](https://github.com/users/jymbocala/projects/3/views/2)
 
 In my project, task allocation and tracking are facilitated through GitHub Projects, a versatile tool similar to Trello. GitHub offers a visual representation of the project board with task cards, columns, and labels for streamlined management.
@@ -444,14 +443,15 @@ In my project, task allocation and tracking are facilitated through GitHub Proje
 ![GitHub Projects 2](docs/images/project-tacking/github-projects2.png)
 ![GitHub Projects 3](docs/images/project-tacking/github-projects3.png)
 
-
 #### Daily stand-ups
+
 ![Standups 1](docs/images/project-tacking/standups1.png)
 ![Standups 2](docs/images/project-tacking/standups2.png)
 ![Standups 3](docs/images/project-tacking/standups3.png)
 ![Standups 4](docs/images/project-tacking/standups4.png)
 
 #### GitHub Repo Commits
+
 Commits to the GitHub repository showcase the progression of tasks.
 
 ![Repo Commits 1](docs/images/project-tacking/commits-1.png)
